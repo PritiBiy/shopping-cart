@@ -2,13 +2,13 @@ package com.shoppingcart.shopping_cart.controller.dto;
 
 import java.util.List;
 
-public class ProductRequest {
+public class AddProductToCartRequest {
     private List<Long> productIds;
 
-    public ProductRequest() {
+    public AddProductToCartRequest() {
     }
 
-    public ProductRequest(List<Long> productIds) {
+    public AddProductToCartRequest(List<Long> productIds) {
         this.productIds = productIds;
     }
 

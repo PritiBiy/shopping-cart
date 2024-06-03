@@ -2,6 +2,7 @@ package com.shoppingcart.shopping_cart.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shoppingcart.shopping_cart.controller.dto.AddProductToCartRequest;
 import com.shoppingcart.shopping_cart.domain.Cart;
 import com.shoppingcart.shopping_cart.domain.Product;
 import com.shoppingcart.shopping_cart.repository.CartRepository;
@@ -14,9 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -61,14 +59,13 @@ public class CartControllerTest {
 
         cartRepository.save(new Cart(CART_ID));
 
-        Map<String, Object> requestBody = new HashMap<>();
-        List<Long> productIds = Arrays.asList(MOBILE_ID, CHARGER_ID);
-        requestBody.put("productIds", productIds);
+        AddProductToCartRequest addProductToCartRequest = new AddProductToCartRequest(Arrays.asList(MOBILE_ID, CHARGER_ID));
+
 
 
         mockMvc.perform(post("/cart/" + CART_ID)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(requestBody)))
+                        .content(new ObjectMapper().writeValueAsString(addProductToCartRequest)))
                 .andExpect(status().isOk());
 
         assertEquals(2, cartRepository.findById(CART_ID).get().getProductIds().size());
