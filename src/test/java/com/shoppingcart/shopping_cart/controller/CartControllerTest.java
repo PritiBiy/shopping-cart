@@ -3,6 +3,7 @@ package com.shoppingcart.shopping_cart.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shoppingcart.shopping_cart.controller.dto.AddProductToCartRequest;
+import com.shoppingcart.shopping_cart.controller.dto.CartResponse;
 import com.shoppingcart.shopping_cart.domain.Cart;
 import com.shoppingcart.shopping_cart.domain.Product;
 import com.shoppingcart.shopping_cart.repository.CartRepository;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Arrays;
 
@@ -56,19 +58,26 @@ public class CartControllerTest {
         Product charger = new Product(CHARGER_ID, "Charge", 50.0);
         productRepository.save(mobile);
         productRepository.save(charger);
-
         cartRepository.save(new Cart(CART_ID));
 
         AddProductToCartRequest addProductToCartRequest = new AddProductToCartRequest(Arrays.asList(MOBILE_ID, CHARGER_ID));
-
-
 
         mockMvc.perform(post("/cart/" + CART_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(addProductToCartRequest)))
                 .andExpect(status().isOk());
 
-        assertEquals(2, cartRepository.findById(CART_ID).get().getProductIds().size());
+
+        MvcResult getCart = mockMvc.perform(get("/cart/" + CART_ID)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String response = getCart.getResponse().getContentAsString();
+        CartResponse cartResponse = new ObjectMapper().readValue(response, CartResponse.class);
+
+        assertEquals(2, cartResponse.getProductIds().size());
+        assertEquals(1050.0, cartResponse.getTotalCost(), 0.01);
     }
 
 }

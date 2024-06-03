@@ -17,7 +17,6 @@ public class Cart {
     private List<Long> productIds;
 
     public Cart() {
-
     }
 
     public Cart(Long id) {
@@ -33,10 +32,26 @@ public class Cart {
     }
 
     public List<Long> getProductIds() {
-        return productIds;
+        return productIds == null ? List.of() : productIds;
     }
 
     public void setProductIds(List<Long> productIds) {
         this.productIds = productIds;
+    }
+
+    public double getTotalCost() {
+        return 0.0;
+    }
+
+    public double totalCost(List<Product> products) {
+        double totalCost = 0.0;
+        for (Product product : products) {
+            totalCost += product.getPrice();
+        }
+        return totalCost;
+    }
+
+    public boolean isEmpty() {
+        return getProductIds().isEmpty();
     }
 }

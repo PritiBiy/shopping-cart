@@ -2,13 +2,23 @@ package com.shoppingcart.shopping_cart.controller.dto;
 
 import com.shoppingcart.shopping_cart.domain.Cart;
 
+import java.util.List;
 import java.util.Objects;
 
 public class CartResponse {
     Long id;
+    private List<Long> productIds;
+    private Double totalCost;
 
     public CartResponse(Long id) {
         this.id = id;
+        this.productIds = List.of();
+    }
+
+    public CartResponse(Long id, List<Long> productIds, Double totalCost) {
+        this.id = id;
+        this.productIds = productIds;
+        this.totalCost = totalCost;
     }
 
     public Long getId() {
@@ -16,7 +26,7 @@ public class CartResponse {
     }
 
     public static CartResponse from(Cart cart) {
-        return new CartResponse(cart.getId());
+        return new CartResponse(cart.getId(), cart.getProductIds(), cart.getTotalCost());
     }
 
     @Override
@@ -30,5 +40,13 @@ public class CartResponse {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    public List<Long> getProductIds() {
+        return this.productIds;
+    }
+
+    public double getTotalCost() {
+        return this.totalCost;
     }
 }
