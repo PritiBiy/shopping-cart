@@ -6,6 +6,7 @@ import com.shoppingcart.shopping_cart.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,4 +21,9 @@ public class CartService {
         throw new CartNotFoundException("Cart with id " + id + " not found");
     }
 
+    public void addProduct(Long cartId, List<Long> productIds) {
+        Optional<Cart> optionalCart = cartRepository.findById(cartId);
+        Cart cart = optionalCart.orElseThrow(() -> new CartNotFoundException("Cart with id " + cartId + " not found"));
+        cart.addProducts(productIds);
+    }
 }
