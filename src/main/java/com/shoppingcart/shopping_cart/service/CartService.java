@@ -25,5 +25,6 @@ public class CartService {
         Optional<Cart> optionalCart = cartRepository.findById(cartId);
         Cart cart = optionalCart.orElseThrow(() -> new CartNotFoundException("Cart with id " + cartId + " not found"));
         cart.addProducts(productIds);
+        cartRepository.save(cart);
     }
 }

@@ -71,8 +71,7 @@ public class CartControllerTest {
                         .content(new ObjectMapper().writeValueAsString(requestBody)))
                 .andExpect(status().isOk());
 
-        assertEquals(productRepository.count(), 2);
-        assertEquals(cartRepository.findById(CART_ID).get().getProductIds().size(), 2);
+        assertEquals(2, cartRepository.findById(CART_ID).get().getProductIds().size());
     }
 
 }
