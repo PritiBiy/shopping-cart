@@ -1,5 +1,6 @@
 package com.shoppingcart.shopping_cart.controller.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shoppingcart.shopping_cart.domain.Cart;
 
 import java.util.List;
@@ -7,7 +8,9 @@ import java.util.Objects;
 
 public class CartResponse {
     Long id;
+
     private List<Long> productIds;
+
     private Double totalCost;
 
     public CartResponse(Long id) {
@@ -15,7 +18,7 @@ public class CartResponse {
         this.productIds = List.of();
     }
 
-    public CartResponse(Long id, List<Long> productIds, Double totalCost) {
+    public CartResponse(@JsonProperty("id") Long id, @JsonProperty("productIds") List<Long> productIds,   @JsonProperty("totalCost") Double totalCost) {
         this.id = id;
         this.productIds = productIds;
         this.totalCost = totalCost;

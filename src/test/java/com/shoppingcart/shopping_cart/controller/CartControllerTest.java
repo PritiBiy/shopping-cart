@@ -48,7 +48,7 @@ public class CartControllerTest {
 
         mockMvc.perform(get("/cart/345"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":345}"));
+                .andExpect(content().string("{\"id\":345,\"productIds\":[],\"totalCost\":0.0}"));
     }
 
 
@@ -76,6 +76,7 @@ public class CartControllerTest {
         String response = getCart.getResponse().getContentAsString();
         CartResponse cartResponse = new ObjectMapper().readValue(response, CartResponse.class);
 
+        assertEquals(CART_ID, cartResponse.getId());
         assertEquals(2, cartResponse.getProductIds().size());
         assertEquals(1050.0, cartResponse.getTotalCost(), 0.01);
     }
